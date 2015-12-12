@@ -1,0 +1,140 @@
+From c5e1e3ece1afbcf25895a0232001171ab34ba935 Mon Sep 17 00:00:00 2001
+From: Igor Gnatenko <i.gnatenko.brain@gmail.com>
+Date: Sat, 12 Dec 2015 17:50:29 +0100
+Subject: [PATCH 1/2] Add autotools definitions
+
+Signed-off-by: Igor Gnatenko <i.gnatenko.brain@gmail.com>
+---
+ Makefile.am  | 65 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ configure.ac | 31 +++++++++++++++++++++++++++++
+ tipl.pc.in   |  8 ++++++++
+ 3 files changed, 104 insertions(+)
+ create mode 100644 Makefile.am
+ create mode 100644 configure.ac
+ create mode 100644 tipl.pc.in
+
+diff --git a/Makefile.am b/Makefile.am
+new file mode 100644
+index 0000000..ba70a6a
+--- /dev/null
++++ b/Makefile.am
+@@ -0,0 +1,65 @@
++includetipldir = $(includedir)/image
++nobase_includetipl_HEADERS = \
++	filter/anisotropic_diffusion.hpp \
++	filter/canny_edge.hpp \
++	filter/filter_model.hpp \
++	filter/gaussian.hpp \
++	filter/gradient_magnitude.hpp \
++	filter/laplacian.hpp \
++	filter/mean.hpp \
++	filter/sobel.hpp \
++	image.hpp \
++	io/2dseq.hpp \
++	io/avi.hpp \
++	io/bitmap.hpp \
++	io/dicom.hpp \
++	io/interface.hpp \
++	io/io.hpp \
++	io/mat.hpp \
++	io/nifti.hpp \
++	io/tiff.hpp \
++	io/tiff_tag.hpp \
++	ml/ada_boost.hpp \
++	ml/decision_tree.hpp \
++	ml/em.hpp \
++	ml/hmc.hpp \
++	ml/k_means.hpp \
++	ml/lg.hpp \
++	ml/nb.hpp \
++	ml/non_parametric.hpp \
++	ml/svm.hpp \
++	ml/utility.hpp \
++	morphology/morphology.hpp \
++	numerical/basic_op.hpp \
++	numerical/dif.hpp \
++	numerical/fft.hpp \
++	numerical/index_algorithm.hpp \
++	numerical/interpolation.hpp \
++	numerical/matrix.hpp \
++	numerical/numerical.hpp \
++	numerical/optimization.hpp \
++	numerical/resampling.hpp \
++	numerical/slice.hpp \
++	numerical/statistics.hpp \
++	numerical/transformation.hpp \
++	numerical/window.hpp \
++	reg/bfnorm.hpp \
++	reg/dmdm.hpp \
++	reg/lddmm.hpp \
++	reg/linear.hpp \
++	segmentation/disjoint_set.hpp \
++	segmentation/fast_marching.hpp \
++	segmentation/graph_cut.hpp \
++	segmentation/otsu.hpp \
++	segmentation/segmentation.hpp \
++	segmentation/stochastic_competition.hpp \
++	segmentation/watershed.hpp \
++	utility/basic_image.hpp \
++	utility/geometry.hpp \
++	utility/pixel_index.hpp \
++	utility/pixel_value.hpp \
++	vis/color_map.hpp \
++	vis/march_cube.hpp \
++	$(NULL)
++
++noarch_pkgconfig_DATA = tipl.pc
+diff --git a/configure.ac b/configure.ac
+new file mode 100644
+index 0000000..7cb1aa0
+--- /dev/null
++++ b/configure.ac
+@@ -0,0 +1,31 @@
++AC_PREREQ([2.64])
++
++m4_define([tipl_major_version], [0])
++m4_define([tipl_minor_version], [1])
++m4_define([tipl_version],
++          [tipl_major_version.tipl_minor_version])
++
++AC_INIT([TIPL],
++        [tipl_version],
++        [https://github.com/frankyeh/TIPL/issues/new],
++        [TIPL],
++        [https://github.com/frankyeh/TIPL])
++
++AC_SUBST([TIPL_VERSION], [tipl_version])
++
++AM_INIT_AUTOMAKE([1.11 foreign no-dist-gzip dist-xz])
++
++AM_SILENT_RULES([yes])
++
++PKG_NOARCH_INSTALLDIR
++
++AC_CONFIG_FILES([
++	Makefile
++	tipl.pc
++	])
++AC_OUTPUT
++
++AC_MSG_RESULT([
++	Version			${TIPL_VERSION}
++	Prefix			${prefix}
++	])
+diff --git a/tipl.pc.in b/tipl.pc.in
+new file mode 100644
+index 0000000..cb1cdc6
+--- /dev/null
++++ b/tipl.pc.in
+@@ -0,0 +1,8 @@
++prefix=@prefix@
++includedir=@includedir@
++
++Name: TIPL
++Description: Template image processing library
++Libs: -lsvm
++Cflags: -I${includedir}
++Version: @TIPL_VERSION@
+-- 
+2.6.4
+
